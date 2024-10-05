@@ -1,0 +1,14 @@
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/bin/Debug/net8.0/CardFool
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/bin/Debug/net8.0/CardFool.deps.json
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/bin/Debug/net8.0/CardFool.runtimeconfig.json
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/bin/Debug/net8.0/CardFool.dll
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/bin/Debug/net8.0/CardFool.pdb
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.GeneratedMSBuildEditorConfig.editorconfig
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.AssemblyInfoInputs.cache
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.AssemblyInfo.cs
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.csproj.CoreCompileInputs.cache
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.dll
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/refint/CardFool.dll
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.pdb
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.genruntimeconfig.cache
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/ref/CardFool.dll
