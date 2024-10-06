@@ -4,33 +4,9 @@ namespace CardFool
 {
     internal class MPlayer1
     {
-        private static Random _random = new Random();
-
-        private readonly string _name = (_random.Next() % 10).ToString();
+        private readonly string _name = "Player1";
         private readonly List<SCard> _unsortedHand = new List<SCard>();
         private SortedSet<SCard>? _hand; // карты на руке
-
-        private class CardComparer(Suits trumpSuit) : IComparer<SCard>
-        {
-            public int Compare(SCard card1, SCard card2)
-            {
-                bool card1IsTrump = card1.Suit == trumpSuit;
-                bool card2IsTrump = card2.Suit == trumpSuit;
-
-                if (card1IsTrump && !card2IsTrump)
-                    return 1;
-                if (!card1IsTrump && card2IsTrump)
-                    return -1;
-
-                var compareRanks = card1.Rank.CompareTo(card2.Rank);
-                if (compareRanks != 0)
-                {
-                    return compareRanks;
-                }
-
-                return card1.Suit.CompareTo(card2.Suit);
-            }
-        }
 
         // Возвращает имя игрока
         //CPU O(1) MEM O(1)
@@ -62,7 +38,7 @@ namespace CardFool
 
         // Сделать ход (первый)
         //Ходим минимальными картами
-        //Худший случай: CPU O(M * log (N) + N) MEM O(M)
+        //Худший случай: CPU O(N) MEM O(M)
         //M - количество мастей, N - число карт на руках у игрока
         public List<SCard> LayCards()
         {
@@ -70,7 +46,7 @@ namespace CardFool
             List<SCard> smallestCards = new List<SCard>();
             foreach (SCard sCard in _hand)
             {
-                if (smallestCards.Count == 0 || sCard.Rank == smallestCards[^1].Rank)
+                if (smallestCards.Count == 0 || sCard.Rank == smallestCards[smallestCards.Count - 1].Rank)
                 {
                     smallestCards.Add(sCard);
                 }
@@ -84,30 +60,44 @@ namespace CardFool
             return smallestCards;
         }
 
-        //Худший случай: CPU O(N + K * log (N)) MEM O(N), K - число карт на столе,
+        //Худший случай: CPU O(N * log (N)) MEM O(K), K - число карт на столе,
         //N - число карт на руках у игрока
         public bool AddCards(List<SCardPair> table)
         {
             SortHandIfNotSorted();
-            HashSet<int> ranksInTable = [..table.Select(pair => pair.Up.Rank)];
+            HashSet<int> ranksInTable = [];
+            foreach (SCardPair sCardPair in table)
+            {
+                ranksInTable.Add(sCardPair.Up.Rank);
+            }
+            
             if (table.Count != MTable.TotalCards)
             {
                 return false;
             }
 
-            int cardsToAddLeft = MTable.TotalCards - ranksInTable.Count;
+            int cardsToAddLeft = MTable.TotalCards - table.Count;
+            List<SCard> addedCards = new List<SCard>();
             foreach (SCard sCard in _hand)
             {
-                if (--cardsToAddLeft == 0)
-                {
-                    break;
-                }
-
                 if (ranksInTable.Contains(sCard.Rank))
                 {
-                    _hand.Remove(sCard); //log(N)
-                    table.Add(new SCardPair(sCard));
+                    if (cardsToAddLeft-- == 0)
+                    {
+                        break;
+                    }
+                    addedCards.Add(sCard);
                 }
+            }
+            if (addedCards.Count == 0)
+            {
+                return false;
+            }
+            
+            foreach (var addedCard in addedCards)
+            {
+                table.Add(new SCardPair(addedCard));
+                _hand.Remove(addedCard); //log(N)
             }
 
             return true;
@@ -128,9 +118,14 @@ namespace CardFool
                 {
                     continue;
                 }
-                if (_hand.Any(sCard => sCardPair.SetUp(sCard, MTable.GetTrump().Suit)))
+
+                foreach (SCard sCard in _hand)
                 {
-                    table[index] = sCardPair;
+                    if (sCardPair.SetUp(sCard, MTable.GetTrump().Suit))
+                    {
+                        table[index] = sCardPair;
+                        break;
+                    }
                 }
 
                 if (!sCardPair.Beaten)
@@ -162,7 +157,32 @@ namespace CardFool
             if (MTable.GetTrump() != null && _hand == null)
             {
                 _hand = new SortedSet<SCard>(new CardComparer(MTable.GetTrump().Suit));
-                _unsortedHand.ForEach(card => _hand.Add(card));
+                foreach (SCard card in _unsortedHand)
+                {
+                    _hand.Add(card);
+                }
+            }
+        }   
+        
+        private class CardComparer(Suits trumpSuit) : IComparer<SCard>
+        {
+            public int Compare(SCard card1, SCard card2)
+            {
+                bool card1IsTrump = card1.Suit == trumpSuit;
+                bool card2IsTrump = card2.Suit == trumpSuit;
+
+                if (card1IsTrump && !card2IsTrump)
+                    return 1;
+                if (!card1IsTrump && card2IsTrump)
+                    return -1;
+
+                var compareRanks = card1.Rank.CompareTo(card2.Rank);
+                if (compareRanks != 0)
+                {
+                    return compareRanks;
+                }
+
+                return card1.Suit.CompareTo(card2.Suit);
             }
         }
     }

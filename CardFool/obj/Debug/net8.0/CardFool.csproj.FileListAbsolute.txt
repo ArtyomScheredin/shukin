@@ -12,3 +12,4 @@
 /Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.pdb
 /Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.genruntimeconfig.cache
 /Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/ref/CardFool.dll
+/Users/artem.scheredin/RiderProjects/CardFool/CardFool/obj/Debug/net8.0/CardFool.sourcelink.json

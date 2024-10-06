@@ -80,7 +80,7 @@ namespace CardFool;
         // Колода карт в прикупе
         private static List<SCard> deck = new List<SCard>();
         private static MPlayer1 player1;        // игрок 1
-        private static MPlayer1 player2;        // игрок 2
+        private static MPlayer2 player2;        // игрок 2
         private static List<SCard> plHand1 = new List<SCard>();
         private static List<SCard> plHand2 = new List<SCard>();
         private static SCard trump;             // козырь
@@ -88,16 +88,21 @@ namespace CardFool;
         private static bool pause = false;
         static void Main(string[] args)
         {
-            EndGame res;
+            int winsOfRyanna = 0;
+            var dateTime = DateTime.Now;
+            for (int i = 0; i < 10000; i++)
+            {
+                EndGame res;
 
-            Initialize();
+                Initialize();
 
-            res = Play(true);
-            Console.WriteLine(res);
-            if (res == EndGame.First)
-                Console.WriteLine("Winner " + player1.GetName());
-            else if (res == EndGame.Second)
-                Console.WriteLine("Winner " + player2.GetName());
+                res = Play(true);
+                //Console.WriteLine(res);
+                if (res == EndGame.Second)
+                    winsOfRyanna++;
+            }
+            var dateTimeEnd = DateTime.Now;
+            Console.WriteLine("Ryanna wins: " + winsOfRyanna + "\ntime: " + (dateTimeEnd - dateTime));
 
         }
         // Настройка игры
@@ -123,7 +128,7 @@ namespace CardFool;
 
             // Создаем игроков
             player1 = new MPlayer1();
-            player2 = new MPlayer1();
+            player2 = new MPlayer2();
 
             // раздача карт первому и второму игроку
             for (int c = 0; c < TotalCards; c++)
@@ -135,13 +140,13 @@ namespace CardFool;
             }
             // формирование козыря
             trump = deck[deck.Count - 1];
-            Console.Write("Козырь "); ShowCard(trump);
+            //Console.Write("Козырь "); ShowCard(trump);
 
             //***********************************
-            Console.WriteLine();
-            player1.ShowHand();
-            player2.ShowHand();
-            Console.WriteLine();
+            //Console.WriteLine();
+            //player1.ShowHand();
+            //player2.ShowHand();
+            //Console.WriteLine();
 
         }
         // Козырь
@@ -176,8 +181,8 @@ namespace CardFool;
                 }
 
                 //************************
-                Console.WriteLine("Делаем ход");
-                ShowTable(table);
+                //Console.WriteLine("Делаем ход");
+                //ShowTable(table);
 
                 // ==== Начало хода ====
                 // процесс защиты и подкидывания карт
@@ -188,13 +193,13 @@ namespace CardFool;
                         // второй игрок отбивается
                         defend = player2.Defend(table);
                         //************************
-                        Console.WriteLine("Отбивается " + player2.GetName());
-                        ShowTable(table);
+                        //Console.WriteLine("Отбивается " + player2.GetName());
+                        //ShowTable(table);
                         // игрок подкидывает
                         added = player1.AddCards(table);
                         //************************
-                        Console.WriteLine("Подкидывает " + player1.GetName() + "  " + added);
-                        ShowTable(table);
+                        //Console.WriteLine("Подкидывает " + player1.GetName() + "  " + added);
+                        //ShowTable(table);
 
                         // если не отбился, то принимает
                         if (!defend)
@@ -220,13 +225,13 @@ namespace CardFool;
                         // первый игрок отбивается
                         defend = player1.Defend(table);
                         //************************
-                        Console.WriteLine("Отбивается " + player1.GetName());
-                        ShowTable(table);
+                        //Console.WriteLine("Отбивается " + player1.GetName());
+                        //ShowTable(table);
                         // игрок подкидывает
                         added = player2.AddCards(table);
                         //************************
-                        Console.WriteLine("Подкидывает " + player2.GetName() + "  " + added);
-                        ShowTable(table);
+                        //Console.WriteLine("Подкидывает " + player2.GetName() + "  " + added);
+                        //ShowTable(table);
 
                         // если не отбился, то принимает
                         if (!defend)
@@ -267,9 +272,9 @@ namespace CardFool;
                 if (defend) playerFirst = !playerFirst;
 
                 //***********************************
-                Console.WriteLine();
-                player1.ShowHand();
-                player2.ShowHand();
+                //Console.WriteLine();
+                //player1.ShowHand();
+                //player2.ShowHand();
                 if (pause) Console.ReadLine();
 
                 // Если конец игры, то выходим
@@ -405,56 +410,18 @@ namespace CardFool;
         {
             foreach (SCardPair pair in table)
             {
-                if (pair.Beaten) ShowCard(pair.Up);
+                /*if (pair.Beaten) ShowCard(pair.Up);
                 else Console.Write("  ");
-                Console.Write(Separator);
+                Console.Write(Separator);*/
             }
-            Console.WriteLine();
+            //Console.WriteLine();
             foreach (SCardPair pair in table)
             {
                 ShowCard(pair.Down);
                 Console.Write(Separator);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
             if (pause) Console.ReadLine();
         }
 
-    }
-
-    internal class MPlayer2
-    {
-        public string GetName()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddToHand(SCard sCard)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowHand()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<SCard> LayCards()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Defend(List<SCardPair> table)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddCards(List<SCardPair> table)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetCount()
-        {
-            throw new NotImplementedException();
-        }
     }
